@@ -98,8 +98,8 @@ class BarcodeScannerApp(QMainWindow):
 
 
     def add_item(self):
-        print("add item")
-
+        UpcNum = self.entry.text()
+        print(UpcNum)
     def remove_item(self):
         print("item removed")
 
