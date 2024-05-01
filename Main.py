@@ -33,7 +33,7 @@ class BarcodeScannerApp(QMainWindow):
         self.label = QLabel("Scan a barcode:")
         self.barcodeEntryLayout.addWidget(self.label)
         self.entry = QLineEdit()
-        self.entry.setDisabled(True)
+        self.entry.setDisabled(False)
         self.barcodeEntryLayout.addWidget(self.entry)
 
 
@@ -44,7 +44,7 @@ class BarcodeScannerApp(QMainWindow):
         self.item_name_label = QLabel("Item Name:")
         self.itemNameEntryLayout.addWidget(self.item_name_label)
         self.item_name_entry = QLineEdit()
-        self.item_name_entry.setDisabled(True)
+        self.item_name_entry.setDisabled(False)
         self.itemNameEntryLayout.addWidget(self.item_name_entry)
 
 
@@ -54,8 +54,10 @@ class BarcodeScannerApp(QMainWindow):
         self.expiration_date_label = QLabel("Expiration Date:")
         self.expirationDateLayout.addWidget(self.expiration_date_label)
         self.expiration_date_entry = QLineEdit()
-        self.expiration_date_entry.setDisabled(True)
+        self.expiration_date_entry.setDisabled(False)
         self.expirationDateLayout.addWidget(self.expiration_date_entry)
+
+    
 
 
         self.rightListViewLayout = QVBoxLayout()
@@ -63,6 +65,20 @@ class BarcodeScannerApp(QMainWindow):
 
         self.listView = QListView()
         self.rightListViewLayout.addWidget(self.listView)
+
+
+        self.buttonLayout = QHBoxLayout()
+        self.leftLayout.addLayout(self.buttonLayout)
+
+        self.addItemButton = QPushButton(text="Add Item")
+        #needs to be connected to a function
+
+
+        self.removeItem = QPushButton(text="Remove Item")
+        #needs to be connected to a function
+
+        self.buttonLayout.addWidget(self.addItemButton)
+        self.buttonLayout.addWidget(self.removeItem)
 
 
         self.barcode_scanning = False
