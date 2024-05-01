@@ -71,11 +71,11 @@ class BarcodeScannerApp(QMainWindow):
         self.leftLayout.addLayout(self.buttonLayout)
 
         self.addItemButton = QPushButton(text="Add Item")
-        #needs to be connected to a function
+        self.addItemButton.clicked.connect(self.add_item)
 
 
         self.removeItem = QPushButton(text="Remove Item")
-        #needs to be connected to a function
+        self.removeItem.clicked.connect(self.remove_item)
 
         self.buttonLayout.addWidget(self.addItemButton)
         self.buttonLayout.addWidget(self.removeItem)
@@ -95,6 +95,13 @@ class BarcodeScannerApp(QMainWindow):
         item_name = self.item_name_entry.text()
         expiration_date = self.expiration_date_entry.text()
         print(f"Scanned barcode: {barcode}, Item: {item_name}, Expiration Date: {expiration_date}")
+
+
+    def add_item(self):
+        print("add item")
+
+    def remove_item(self):
+        print("item removed")
 
 
 if __name__ == "__main__":
