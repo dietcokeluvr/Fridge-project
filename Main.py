@@ -5,6 +5,8 @@ from PyQt6.QtWidgets import (QMainWindow, QApplication, QLabel, QLineEdit, QVBox
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QLabel
+from database import DB
+
 
 class BarcodeScannerApp(QMainWindow):
     def __init__(self):
@@ -93,12 +95,44 @@ class BarcodeScannerApp(QMainWindow):
         image.loadFromData(urllib.request.urlopen(image_url).read())
         self.productImageLabel.setPixmap(image.scaled(200, 200, Qt.AspectRatioMode.KeepAspectRatio))
 
+    '''-------------------------------------------------------------------------
+    Type: AI Generated
+    Attribution: ChatGPT 3.5
+    Function: view fridge
+    Prompt: create a view fridge function based on code
+    Source: https://chat.openai.com/
+-------------------------------------------------------------------------'''
     def view_fridge(self):
         # Placeholder for the functionality to view fridge contents
-        print("Viewing fridge contents")
+        db = DB()
+        contents = db.get_item_data()
+        if contents:
+            self.productDetails.clear()
+            self.productDetails.addItem("Fridge Contents:")
+            for item in contents:
+                item_id, expires, quantity, upc = item
+                self.productDetails.addItem(f"Item ID: {item_id}, Expires: {expires}, Quantity: {quantity}, UPC: {upc}")
+        else:
+            self.productDetails.clear()
+            self.productDetails.addItem("The fridge is empty.")
 
+    '''-------------------------------------------------------------------------
+    Type: AI Generated
+    Attribution: ChatGPT 3.5
+    Function: add item
+    Prompt: create an add item function based on code
+    Source: https://chat.openai.com/
+-------------------------------------------------------------------------'''
     def add_item(self):
         # Placeholder for the functionality to add item to your inventory
+        upc = self.entry.text()
+        db = DB()
+        product = db.get_item_data(upc)
+        if product:
+            db.add_product(upc, 1)  # Assuming quantity is always 1 for simplicity
+            QMessageBox.information(self, "Success", "Item added to the fridge.")
+        else:
+            QMessageBox.warning(self, "Error", "Product not found. Please scan a valid barcode.")
         print("Item added to the inventory")
 
 if __name__ == "__main__":
@@ -106,3 +140,4 @@ if __name__ == "__main__":
     barcode_app = BarcodeScannerApp()
     barcode_app.show()
     sys.exit(app.exec())
+
