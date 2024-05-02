@@ -1,6 +1,6 @@
 import sqlite3
 import csv
-# In Progress
+
 class DB:
     
     def __init__(self):
@@ -49,8 +49,8 @@ class DB:
     def create_item_table(self):
         con = sqlite3.connect(self.filename)
         cur = con.cursor()
-        sqlstr = "CREATE TABLE item (item_id INTEGER NOT NULL UNIQUE, expires TEXT, \
-	                quantity INTEGER, upc INTEGER NOT NULL,\
+        sqlstr = "CREATE TABLE item (item_id INTEGER NOT NULL UNIQUE, upc INTEGER NOT NULL, \
+                    quantity INTEGER NOT NULL DEFAULT 1, expires TEXT,\
 	                FOREIGN KEY(upc) REFERENCES product(upc) ON DELETE CASCADE, \
 	                PRIMARY KEY(itemID AUTOINCREMENT));"
         
@@ -78,6 +78,13 @@ class DB:
         con.commit()
         con.close()
 
+    # Add a new item
+    def add_item(self, item_id, upc, quantity, expires):
+        con = sqlite3.connect(self.filename)
+        cur = con.cursor()
+        cur.execute("INSERT INTO item VALUES (?, ?, ?, ?)", (item_id, upc, quantity, expires))
+        con.commit()
+        con.close()
 
 
     # Delete a shipment
@@ -89,14 +96,7 @@ class DB:
         con.commit()
         con.close()
 
-    # Delete a location
-    def delete_location(self, location_id):
-        
-        con = sqlite3.connect(self.filename)
-        cur = con.cursor()
-        cur.execute("DELETE FROM Location WHERE location_id = " + location_id)
-        con.commit()
-        con.close()
+
 
     # Delete a item
     def delete_item(self, item_id):
@@ -107,11 +107,11 @@ class DB:
         con.commit()
         con.close()
 
-    #Show shipment table
-    def get_shipment_data(self):
+    #Show product table
+    def get_product_data(self):
         con = sqlite3.connect(self.filename)
         cur = con.cursor()
-        res = cur.execute("SELECT * FROM Shipment")
+        res = cur.execute("SELECT * FROM product")
         data = res.fetchall()
         return data
     
@@ -119,25 +119,16 @@ class DB:
     def get_item_data(self):
         con = sqlite3.connect(self.filename)
         cur = con.cursor()
-        res = cur.execute("SELECT * FROM Item")
+        res = cur.execute("SELECT * FROM item")
         data = res.fetchall()
         return data
-    
-    #Show location table
-    def get_location_data(self):
-        con = sqlite3.connect(self.filename)
-        cur = con.cursor()
-        res = cur.execute("SELECT * FROM Location")
-        data = res.fetchall()
-        return data
-    
+
     #show Joined tables
     def get_join_data(self):
         con = sqlite3.connect(self.filename)
         cur = con.cursor()
-        res = cur.execute("SELECT Shipment.shipment_id, Location.location_name , Item.item_name, Shipment.quantity \
-                FROM Shipment LEFT JOIN Location USING (location_id) \
-                LEFT JOIN Item USING (item_id);")
+        res = cur.execute("SELECT item.item_id, product.p_name, item.quantity, item.expires, product.p_url \
+                FROM item LEFT JOIN product USING (upc);")
         data = res.fetchall()
         return data
     

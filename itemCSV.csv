@@ -1,1 +1,4 @@
-itemID,expires,quantity,upc
+item_id,upc,quantity,expires
+11,25000054167,2,11/11/2024
+12,49000028911,4,12/12/2024
+13,28400561471,10,1/12/2025
